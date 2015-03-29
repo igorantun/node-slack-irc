@@ -7,10 +7,10 @@ var pack = require("./package.json");
 
 // Configuration
 var ircConfig = {
-	server: 'IRC SERVER',
+    server: 'IRC SERVER',
     userName: 'IRC USERNAME',
     realName: 'IRC REAL NAME',
-	channels: ['IRC CHANNEL'],
+    channels: ['IRC CHANNEL'],
     autoConnect: true,
     autoRejoin: true,
     secure: true,
@@ -18,13 +18,13 @@ var ircConfig = {
 };
 
 var slackConfig = {
-	'token': 'YOUR SLACK TOKEN',
-	'logging': false,
-	channel: 'SLACK CHANNEL ID'
+    'token': 'YOUR SLACK TOKEN',
+    'logging': false,
+    channel: 'SLACK CHANNEL ID'
 };
 
 var appConfig = {
-	logging: true
+    logging: true
 };
 
 
@@ -36,7 +36,7 @@ var slack = new slackAPI(slackConfig);
 // Variables
 var logInfo    = chalk.bold.blue('[Info] ');
 var logError   = chalk.bold.red.dim('[Error] ');
-var logStop	   = chalk.bold.green.dim('[Stop] ');
+var logStop    = chalk.bold.green.dim('[Stop] ');
 var logStart   = chalk.bold.green.dim('[Start] ');
 var logMessage = chalk.bold.cyan.dim('[Message] ');
 
@@ -58,8 +58,8 @@ function getTime() {
 }
 
 function consoleLog(type, message) {
-	if(appConfig.logging === true)
-		console.log('[' + getTime() + '] ' + type + message);
+    if(appConfig.logging === true)
+        console.log('[' + getTime() + '] ' + type + message);
 }
 
 
@@ -79,31 +79,31 @@ client.addListener('registered', function(message) {
 });
 
 slack.on('message', function(data) {
-	if(typeof data.text == 'undefined') return;
+    if(typeof data.text == 'undefined') return;
 
-	if(data.text.charAt(0) === '!' && data.channel === slackConfig.channel) {
-		var command = data.text.substring(1).split(' ');
-		var user = slack.getUser(data.user).name;
+    if(data.text.charAt(0) === '!' && data.channel === slackConfig.channel) {
+        var command = data.text.substring(1).split(' ');
+        var user = slack.getUser(data.user).name;
 
-		switch (command[0].toLowerCase()) {
-			case "say":
-    			messageFlux++;
-				var message = data.text.substring(5);
-    			consoleLog(logMessage, '[Slack] ' + user + ': ' + message);
-				client.say(ircConfig.channels, '[Slack] ' + user + ': ' + message);
-    			slack.sendMsg(slackConfig.channel, '[Slack] *' + user + ':* ' + message);
-			break;
+        switch (command[0].toLowerCase()) {
+            case "say":
+                messageFlux++;
+                var message = data.text.substring(5);
+                consoleLog(logMessage, '[Slack] ' + user + ': ' + message);
+                client.say(ircConfig.channels, '[Slack] ' + user + ': ' + message);
+                slack.sendMsg(slackConfig.channel, '[Slack] *' + user + ':* ' + message);
+            break;
 
-			case "status":
-				consoleLog(logInfo, '[' + user + '] - Version: ' + appVersion + ' | Uptime: ' + process.uptime() + ' | Messages sent/received: ' + messageFlux);
-				slack.sendMsg(slackConfig.channel, '@' + user + ' *- Version:* ' + appVersion + ' *| Uptime:* ' + process.uptime() + 's *| Messages sent/received:* ' + messageFlux);
-			break;
-		}
-	}
+            case "status":
+                consoleLog(logInfo, '[' + user + '] - Version: ' + appVersion + ' | Uptime: ' + process.uptime() + ' | Messages sent/received: ' + messageFlux);
+                slack.sendMsg(slackConfig.channel, '@' + user + ' *- Version:* ' + appVersion + ' *| Uptime:* ' + process.uptime() + 's *| Messages sent/received:* ' + messageFlux);
+            break;
+        }
+    }
 });
 
 process.on('exit', function(code) {
-	consoleLog(stop, 'About to exit with code: ' + code);
+    consoleLog(stop, 'About to exit with code: ' + code);
 });
 
 consoleLog(start, 'Initializing...');
