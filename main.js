@@ -65,7 +65,7 @@ function consoleLog(type, message) {
 
 // Callbacks
 client.addListener('message', function (from, to, message) {
-    slack.sendMsg(slackConfig.channel, '*' + from + ':* ' + message);
+    slack.sendMsg(slackConfig.channel, '[IRC] *' + from + ':* ' + message);
     consoleLog(logMessage, '[IRC] ' + from + ': ' + message);
     messageFlux++;
 });
@@ -91,6 +91,7 @@ slack.on('message', function(data) {
 				var message = data.text.substring(5);
     			consoleLog(logMessage, '[Slack] ' + user + ': ' + message);
 				client.say(ircConfig.channels, '[Slack] ' + user + ': ' + message);
+    			slack.sendMsg(slackConfig.channel, '[Slack] *' + user + ':* ' + message);
 			break;
 
 			case "status":
