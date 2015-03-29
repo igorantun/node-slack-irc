@@ -1,0 +1,33 @@
+{
+  "name": "node-slack-irc",
+  "version": "0.3.4",
+  "description": "Node.JS solution to integrate IRC chats to Slack",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IgorAntun/node-slack-irc.git"
+  },
+  "keywords": [
+    "node",
+    "node.js",
+    "irc",
+    "slack"
+  ],
+  "author": "Igor Antun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IgorAntun/node-slack-irc/issues"
+  },
+  "dependencies": {
+    "irc": "~0.3.9",
+    "slackbotapi": "~1.0.3",
+    "eventemitter2": "~0.4.14",
+    "ws": "~0.7.1",
+    "request": "~2.54.0",
+    "jethro": "~1.2.7",
+    "chalk": "~1.0.0"
+  }
+}
