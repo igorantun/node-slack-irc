@@ -106,4 +106,4 @@ process.on('exit', function(code) {
     consoleLog(stop, 'About to exit with code: ' + code);
 });
 
-consoleLog(start, 'Initializing...');
+consoleLog(logStart, 'Initializing...');
