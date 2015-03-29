@@ -103,7 +103,7 @@ slack.on('message', function(data) {
 });
 
 process.on('exit', function(code) {
-    consoleLog(stop, 'About to exit with code: ' + code);
+    consoleLog(logStop, 'About to exit with code: ' + code);
 });
 
 consoleLog(logStart, 'Initializing...');
