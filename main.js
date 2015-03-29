@@ -36,7 +36,7 @@ var slack = new slackAPI(slackConfig);
 // Variables
 var logInfo    = chalk.bold.blue('[Info] ');
 var logError   = chalk.bold.red.dim('[Error] ');
-var logStop    = chalk.bold.green.dim('[Stop] ');
+var logStop    = chalk.bold.red.dim('[Stop] ');
 var logStart   = chalk.bold.green.dim('[Start] ');
 var logMessage = chalk.bold.cyan.dim('[Message] ');
 
@@ -85,7 +85,7 @@ slack.on('message', function(data) {
         var command = data.text.substring(1).split(' ');
         var user = slack.getUser(data.user).name;
 
-        switch (command[0].toLowerCase()) {
+        switch(command[0].toLowerCase()) {
             case "say":
                 messageFlux++;
                 var message = data.text.substring(5);
@@ -103,7 +103,7 @@ slack.on('message', function(data) {
 });
 
 process.on('exit', function(code) {
-    consoleLog(logStop, 'About to exit with code: ' + code);
+    consoleLog(logStop, 'Exiting with code ' + code);
 });
 
 consoleLog(logStart, 'Initializing...');
