@@ -7,7 +7,7 @@ As the name says, this is a solution to integrate any IRC chat to your Slack tea
 
 ## Commands
 - !say [message] - Sends your message from Slack to IRC
-- !info - Shows basic info about the app, including version, uptime and messages sent/received.
+- !status - Shows basic info about the app, including version, uptime and messages sent/received.
 
 ## Setup
 Clone this repo to your desktop and run `npm install` to install all the dependencies.
