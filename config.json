@@ -4,10 +4,10 @@
     },
 
     "irc": {
-        "server": "irc.freenode.net",
-        "userName": "node-slack-irc",
-        "realName": "Node-Slack-IRC",
-        "channels": ["#flood!"],
+        "server": "irc-server",
+        "userName": "username",
+        "realName": "realname",
+        "channels": ["channel"],
         "autoConnect": true,
         "autoRejoin": true,
         "secure": true,
