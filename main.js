@@ -1,109 +1,74 @@
 // Requires
 var irc = require('irc');
 var chalk = require('chalk');
-var slackAPI = require('slackbotapi');
+var Slack = require('slack-client');
+var config = require("./config.json");
 var pack = require("./package.json");
-
-
-// Configuration
-var ircConfig = {
-    server: 'IRC SERVER',
-    userName: 'IRC USERNAME',
-    realName: 'IRC REAL NAME',
-    channels: ['IRC CHANNEL'],
-    autoConnect: true,
-    autoRejoin: true,
-    secure: true,
-    port: 6697
-};
-
-var slackConfig = {
-    'token': 'YOUR SLACK TOKEN',
-    'logging': false,
-    channel: 'SLACK CHANNEL ID'
-};
-
-var appConfig = {
-    logging: true
-};
+var consoleLog = require("./lib/log.js");
 
 
 // Connection
-var client = new irc.Client(ircConfig.server, ircConfig.userName, ircConfig);
-var slack = new slackAPI(slackConfig);
+var client = new irc.Client(config.irc.server, config.irc.userName, config.irc);
+var slack = new Slack(config.slack.token, false, false);
+var channel;
 
 
 // Variables
-var logInfo    = chalk.bold.blue('[Info] ');
-var logError   = chalk.bold.red.dim('[Error] ');
-var logStop    = chalk.bold.red.dim('[Stop] ');
-var logStart   = chalk.bold.green.dim('[Start] ');
-var logMessage = chalk.bold.cyan.dim('[Message] ');
-
-var messageFlux = 0;
-var appVersion = pack.version;
+var status = {
+    messages: 0,
+    connected: false
+};
 
 
-// Utilities
-function getTime() {
-    var now = new Date(),
-        time = [now.getHours(), now.getMinutes(), now.getSeconds()];
- 
-    for(var i = 0; i < 3; i++) {
-        if(time[i] < 10)
-            time[i] = "0" + time[i];
-    }
- 
-    return time.join(":");
-}
-
-function consoleLog(type, message) {
-    if(appConfig.logging === true)
-        console.log('[' + getTime() + '] ' + type + message);
-}
-
-
-// Callbacks
+// Listeners
 client.addListener('message', function (from, to, message) {
-    slack.sendMsg(slackConfig.channel, '[IRC] *' + from + ':* ' + message);
-    consoleLog(logMessage, '[IRC] ' + from + ': ' + message);
-    messageFlux++;
+    channel.postMessage({channel: config.slack.channel, text: message, username: from, icon_url: 'http://api.adorable.io/avatars/48/' + from});
+    consoleLog('message', '[IRC] ' + from + ': ' + message);
+    status.messages++;
 });
 
 client.addListener('error', function(message) {
-    consoleLog(logError, message);
+    consoleLog('error', message);
 });
 
 client.addListener('registered', function(message) {
-    consoleLog(logStart, 'Connected to IRC channel');
+    consoleLog('start', 'Connected to IRC channel');
+    status.connected = true;
 });
 
-slack.on('message', function(data) {
-    if(typeof data.text == 'undefined') return;
 
-    if(data.text.charAt(0) === '!' && data.channel === slackConfig.channel) {
-        var command = data.text.substring(1).split(' ');
-        var user = slack.getUser(data.user).name;
+// Callbacks
+slack.on('open', function() {
+    channel = slack.getChannelGroupOrDMByID(config.slack.channel);
+});
 
+slack.on('message', function(message) {
+    if(typeof message.text == 'undefined') return;
+
+    var user = slack.getUserByID(message.user);
+    var command = message.text.substring(1).split(' ');
+
+    if(message.text.charAt(0) === '!' && message.channel === config.slack.channel && status.connected) {
         switch(command[0].toLowerCase()) {
-            case "say":
-                messageFlux++;
-                var message = data.text.substring(5);
-                consoleLog(logMessage, '[Slack] ' + user + ': ' + message);
-                client.say(ircConfig.channels, '[Slack] ' + user + ': ' + message);
-                slack.sendMsg(slackConfig.channel, '[Slack] *' + user + ':* ' + message);
+            case 'say': case 's':
+                var message = message.text.substring(5);
+
+                status.messages++;
+                client.send('NICK', user.name);
+
+                client.say(config.irc.channels, message);
+                consoleLog('message', '[Slack] ' + user.name + ': ' + message);
             break;
 
-            case "status":
-                consoleLog(logInfo, '[' + user + '] - Version: ' + appVersion + ' | Uptime: ' + process.uptime() + ' | Messages sent/received: ' + messageFlux);
-                slack.sendMsg(slackConfig.channel, '@' + user + ' *- Version:* ' + appVersion + ' *| Uptime:* ' + process.uptime() + 's *| Messages sent/received:* ' + messageFlux);
+            case 'status':
+                consoleLog('info', '[' + user.name + '] - Version: ' + pack.version + ' | Uptime: ' + process.uptime() + 's | Messages sent/received: ' + status.messages);
+                channel.postMessage({channel: config.slack.channel, text: '<@' + message.user + '> *- Version:* ' + pack.version + ' *| Uptime:* ' + process.uptime() + 's *| Messages sent/received:* ' + status.messages, username: 'status', icon_url: 'http://api.adorable.io/avatars/48/info'});
             break;
         }
     }
 });
 
-process.on('exit', function(code) {
-    consoleLog(logStop, 'Exiting with code ' + code);
-});
 
-consoleLog(logStart, 'Initializing...');
+// Intern
+consoleLog('start', 'Initializing...');
+slack.login();

@@ -1,0 +1,87 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'node-slack-client' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.38
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'node-slack-client', null ]
+6 verbose cache add name=undefined spec="node-slack-client" args=["node-slack-client",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'node-slack-client',
+7 verbose parsed url   path: 'node-slack-client',
+7 verbose parsed url   href: 'node-slack-client' }
+8 silly lockFile 1521ce61-node-slack-client node-slack-client
+9 verbose lock node-slack-client /home/igorantun/.npm/1521ce61-node-slack-client.lock
+10 silly lockFile 1521ce61-node-slack-client node-slack-client
+11 silly lockFile 1521ce61-node-slack-client node-slack-client
+12 verbose addNamed [ 'node-slack-client', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 5d7c4e19-node-slack-client node-slack-client@
+15 verbose lock node-slack-client@ /home/igorantun/.npm/5d7c4e19-node-slack-client.lock
+16 silly addNameRange { name: 'node-slack-client', range: '*', hasData: false }
+17 verbose request where is /node-slack-client
+18 verbose request registry https://registry.npmjs.org/
+19 verbose request id db152debed9559f5
+20 verbose url raw /node-slack-client
+21 verbose url resolving [ 'https://registry.npmjs.org/', './node-slack-client' ]
+22 verbose url resolved https://registry.npmjs.org/node-slack-client
+23 verbose request where is https://registry.npmjs.org/node-slack-client
+24 info trying registry request attempt 1 at 03:44:36
+25 http GET https://registry.npmjs.org/node-slack-client
+26 http 404 https://registry.npmjs.org/node-slack-client
+27 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 verbose headers   'content-type': 'application/json',
+27 verbose headers   'cache-control': 'max-age=0',
+27 verbose headers   'content-length': '51',
+27 verbose headers   'accept-ranges': 'bytes',
+27 verbose headers   date: 'Fri, 01 May 2015 06:44:37 GMT',
+27 verbose headers   via: '1.1 varnish',
+27 verbose headers   age: '0',
+27 verbose headers   connection: 'keep-alive',
+27 verbose headers   'x-served-by': 'cache-atl6234-ATL',
+27 verbose headers   'x-cache': 'MISS',
+27 verbose headers   'x-cache-hits': '0',
+27 verbose headers   'x-timer': 'S1430462677.857969,VS0,VE80' }
+28 silly registry.get cb [ 404,
+28 silly registry.get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'cache-control': 'max-age=0',
+28 silly registry.get     'content-length': '51',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     date: 'Fri, 01 May 2015 06:44:37 GMT',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     age: '0',
+28 silly registry.get     connection: 'keep-alive',
+28 silly registry.get     'x-served-by': 'cache-atl6234-ATL',
+28 silly registry.get     'x-cache': 'MISS',
+28 silly registry.get     'x-cache-hits': '0',
+28 silly registry.get     'x-timer': 'S1430462677.857969,VS0,VE80' } ]
+29 silly lockFile 5d7c4e19-node-slack-client node-slack-client@
+30 silly lockFile 5d7c4e19-node-slack-client node-slack-client@
+31 error 404 404 Not Found: node-slack-client
+31 error 404
+31 error 404 'node-slack-client' is not in the npm registry.
+31 error 404 You should bug the author to publish it
+31 error 404 It was specified as a dependency of 'node-slack-irc'
+31 error 404
+31 error 404 Maybe try 'npm search slack client'
+31 error 404
+31 error 404 Note that you can also install from a
+31 error 404 tarball, folder, or http url, or git url.
+32 error System Linux 3.19.5-200.fc21.x86_64
+33 error command "/usr/bin/node" "/usr/bin/npm" "install" "node-slack-client"
+34 error cwd /home/igorantun/Documents/Javascript/GitHub/node-slack-irc
+35 error node -v v0.10.38
+36 error npm -v 1.4.28
+37 error code E404
+38 verbose exit [ 1, true ]

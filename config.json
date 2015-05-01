@@ -1,0 +1,21 @@
+{
+    "app": {
+        "logging": true
+    },
+
+    "irc": {
+        "server": "irc.freenode.net",
+        "userName": "node-slack-irc",
+        "realName": "Node-Slack-IRC",
+        "channels": ["#flood!"],
+        "autoConnect": true,
+        "autoRejoin": true,
+        "secure": true,
+        "port": 6697
+    },
+
+    "slack": {
+        "token": "your-slack-token",
+        "channel": "your-slack-channel"
+    }
+}
