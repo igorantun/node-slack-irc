@@ -72,3 +72,8 @@ slack.on('message', function(message) {
 // Intern
 consoleLog('start', 'Initializing...');
 slack.login();
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ' + err);
+    console.log('Stack trace: ' + err.stack);
+});
