@@ -1,14 +1,14 @@
 // Requires
-var irc = require('irc');
 var chalk = require('chalk');
+var IRC = require('irc');
 var Slack = require('slack-client');
-var config = require("./config.json");
 var pack = require("./package.json");
+var config = require("./config.json");
 var consoleLog = require("./lib/log.js");
 
 
 // Connection
-var client = new irc.Client(config.irc.server, config.irc.userName, config.irc);
+var irc = new IRC.Client(config.irc.server, config.irc.userName, config.irc);
 var slack = new Slack(config.slack.token, false, false);
 var channel;
 
@@ -21,17 +21,17 @@ var status = {
 
 
 // Listeners
-client.addListener('message', function (from, to, message) {
+irc.addListener('message', function (from, to, message) {
     channel.postMessage({channel: config.slack.channel, text: message, username: from, icon_url: 'http://api.adorable.io/avatars/48/' + from});
     consoleLog('message', '[IRC] ' + from + ': ' + message);
     status.messages++;
 });
 
-client.addListener('error', function(message) {
+irc.addListener('error', function(message) {
     consoleLog('error', message);
 });
 
-client.addListener('registered', function(message) {
+irc.addListener('registered', function(message) {
     consoleLog('start', 'Connected to IRC channel');
     status.connected = true;
 });
@@ -54,9 +54,9 @@ slack.on('message', function(message) {
                 var message = message.text.substring(5);
 
                 status.messages++;
-                client.send('NICK', user.name);
+                irc.send('NICK', user.name);
 
-                client.say(config.irc.channels, message);
+                irc.say(config.irc.channels, message);
                 consoleLog('message', '[Slack] ' + user.name + ': ' + message);
             break;
 
