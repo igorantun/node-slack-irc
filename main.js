@@ -1,7 +1,8 @@
 // Requires
 var chalk = require('chalk');
-var IRC = require('irc');
 var Slack = require('slack-client');
+var IRC = require('irc');
+
 var pack = require("./package.json");
 var config = require("./config.json");
 var consoleLog = require("./lib/log.js");
@@ -15,6 +16,7 @@ var channel;
 
 // Variables
 var status = {
+    name: config.irc.userName,
     messages: 0,
     connected: false
 };
@@ -54,9 +56,16 @@ slack.on('message', function(message) {
                 var message = message.text.substring(5);
 
                 status.messages++;
-                irc.send('NICK', user.name);
 
-                irc.say(config.irc.channels, message);
+                client.whois(user.name, function(info) {
+                    if(info && info.nick === user.name) {
+                        user.name = user.name + '_';
+                    }
+                    
+                    irc.send('NICK', user.name);
+                    irc.say(config.irc.channels, message);
+                });
+
                 consoleLog('message', '[Slack] ' + user.name + ': ' + message);
             break;
 
