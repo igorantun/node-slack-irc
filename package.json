@@ -1,6 +1,6 @@
 {
   "name": "node-slack-irc",
-  "version": "0.6.33",
+  "version": "0.6.4",
   "description": "Node.JS solution to integrate IRC chats to Slack",
   "main": "main.js",
   "scripts": {

@@ -58,10 +58,11 @@ slack.on('message', function(message) {
                 status.messages++;
 
                 client.whois(user.name, function(info) {
-                    if(info && info.nick === user.name) {
+                    if(info && info.nick === user.name && status.name !== user.name) {
                         user.name = user.name + '_';
                     }
-                    
+
+                    status.name = user.name;
                     irc.send('NICK', user.name);
                     irc.say(config.irc.channels, message);
                 });
