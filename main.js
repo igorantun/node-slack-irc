@@ -23,7 +23,7 @@ var status = {
 
 
 // Listeners
-irc.addListener('message', function (from, to, message) {
+irc.addListener('message', function(from, to, message) {
     channel.postMessage({channel: config.slack.channel, text: message, username: from, icon_url: 'http://api.adorable.io/avatars/48/' + from});
     consoleLog('message', '[IRC] ' + from + ': ' + message);
     status.messages++;
